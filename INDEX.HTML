@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo Hinode</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Tagesschrift&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: black;
+      padding: 40px;
+      color: white;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-family: 'Tagesschrift', cursive;
+    }
+
+    /* Pantalla de bienvenida */
+    #bienvenida {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.5rem;
+    }
+    #bienvenida input, #bienvenida button {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 10px;
+      width: 250px;
+    }
+    #bienvenida button {
+      background-color: #d49c39;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    #bienvenida button:hover {
+      background-color: #b47f28;
+    }
+
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+        
+     .producto {
+            background: #fff;
+            border: 2px solid #daa520;
+            border-radius: 20px;
+            overflow: hidden;
+            color: black;
+            padding: 1rem;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+
+}
+    .producto:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+    .producto img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .info { padding: 20px; }
+    .info h2 { font-size: 1.3rem; margin-bottom: 10px; }
+    .info p { font-size: 0.95rem; margin-bottom: 15px; }
+    .precio { font-size: 1.2rem; color: #d49c39; font-weight: bold; margin-bottom: 15px; }
+
+    .btn {
+      display: inline-block;
+      background: #d49c39;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: white; color: #d49c39; }
+
+    #carritoResumen {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      color: black;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      display: none;
+      z-index: 10;
+      width: 300px;
+    }
+    #carritoResumen h3 { margin-bottom: 10px; }
+    #carritoLista { max-height: 200px; overflow-y: auto; font-size: 0.95rem; }
+    #total {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: right;
+    }
+
+    #abrirCarrito {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background: #d49c39;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: none;
+    }
+    #cerrar {
+      float: right;
+      color: red;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="bienvenida">
+    <h1>¡Bienvenido!</h1>
+    <p>Por favor, ingresa tu nombre:</p>
+    <input type="text" id="nombreUsuario" placeholder="Tu nombre...">
+    <button onclick="iniciarCatalogo()">Entrar</button>
+  </div>
+<script>
+  function mostrarBienvenida() {
+    document.getElementById("bienvenida").style.display = "flex";
+    document.getElementById("contenidoCatalogo").style.display = "none";
+  }
+
+  function mostrarCatalogo() {
+    document.getElementById("bienvenida").style.display = "none";
+    document.getElementById("contenidoCatalogo").style.display = "block";
+    document.getElementById("contenidoCatalogo").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function toggleCarrito() {
+    const resumen = document.getElementById("carritoResumen");
+    resumen.style.display = (resumen.style.display === "none" || resumen.style.display === "") ? "block" : "none";
+  }
+</script>
+
+  <div id="contenidoCatalogo" style="display:none;">
+    <h1 id="saludoPersonalizado"></h1>
+
+    <div class="catalogo">
+
+      <!-- Productos  -->
+      <div class="producto 1">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi9lfNmDmXyyfSnEu-Xx1SY-b3H0TuFVeLng&s" alt="Perfume Inebriante Masculino">
+        <div class="info">
+          <h2>Perfume Inebriante Masculino</h2>
+          <p>Notas de madera, especias y cítricos.</p>
+          <div class="precio">Bs 380</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume Inebriante Masculino', 380)">Comprar</div>
+        </div>
+      </div>
+
+      <div class="producto 2">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLSpCgQy9vTucJ-G2Hq9XK1WuXYNiZGbxWaQ&s" alt="Perfume Inebriante Femenino">
+        <div class="info">
+          <h2>Perfume Inebriante Femenino</h2>
+          <p>Fragancia poderosa y atractiva.</p>
+          <div class="precio">Bs 380</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume Inebriante Femenino', 380)">Comprar</div>
+        </div>
+      </div>
+
+      <div class="producto 3">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSCuyfAe_bIQ0YuMtioa2R43NTgW24v03WYg&s" alt="Perfume Empire Icon">
+        <div class="info">
+          <h2>Perfume Empire Icon</h2>
+          <p>Inspirador y exitoso.</p>
+          <div class="precio">Bs 270</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume Empire Icon', 270)">Comprar</div>
+        </div>
+      </div>
+
+      <div class="producto 4">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUgKYPHkWEqbjTB67dc9wsUhNR7YiyfhfzvQ&s" alt="Perfume Empire Femenino">
+        <div class="info">
+          <h2>Perfume Empire Femenino</h2>
+          <p>Elegancia y delicadeza femenina.</p>
+          <div class="precio">Bs 360</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume Empire Femenino', 360)">Comprar</div>
+        </div>
+      </div>
+
+ <div class="producto 5">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWEeM0IvE6W5JuHY4kbAYoPnM1tgX4LFbXNQ&s" alt="Perfume Empire masculino">
+        <div class="info">
+          <h2>Perfume Empire masculino</h2>
+          <p> fragancia de la familia olfativa para Hombres.</p>
+          <div class="precio">Bs 360</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume Empire Femenino', 360)">Comprar</div>
+        </div>
+      </div>
+
+ <div class="producto 6">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9MPbZaPCC8MHFgndKniGQbQJp7ZBaOoDlXQ&s" alt="Perfume Latitude Masculino">
+        <div class="info">
+          <h2>Perfume Latitude Masculino</h2>
+          <p>fragrância que celebra el corage y la determinacion del hombre que enfrenta todos los desafios con confiancia..</p>
+          <div class="precio">Bs 240</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume Latitude Masculino', 240)">Comprar</div>
+        </div>
+      </div>
+
+ <div class="producto 7">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5httkl4MNXPzymdE1v9lnKXBVTukSml6dVQ&s" alt="Perfume S POT Masculino">
+        <div class="info">
+          <h2>Perfume S POT Masculino</h2>
+          <p>La frescura del limón combinada con las notas de pimienta negra, madera y ámbar desbordan la intensidad y la seducción masculina.</p>
+          <div class="precio">Bs 237</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume S POT Masculino', 237)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 8">
+        <img src="https://cdnx.jumpseller.com/jaivisa/image/23529843/resize/610/610?1650477264" alt="Perfume S POT Femenino">
+        <div class="info">
+          <h2>Perfume S POT Femenino</h2>
+          <p>Las notas de cerezas negras, frambuesas y violetas reflejan el lado femenino envolvente y atrevido.</p>
+          <div class="precio">Bs 237</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume S POT Femenino', 237)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 9">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIaI9WkxRUZKvXFJhDayrGyrGpEN9XyksPzQ&s" alt="Perfume Rebelle Femenino">
+        <div class="info">
+          <h2>Perfume Rebelle Femenino</h2>
+          <p>Elegancia y delicadeza femenina.</p>
+          <div class="precio">Bs 250</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume Rebelle Femenino', 250)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 10">
+        <img src="https://photos.enjoei.com.br/feelin-sexy-for-her-42281411/800x800/czM6Ly9waG90b3MuZW5qb2VpLmNvbS5ici9wcm9kdWN0cy8xMTM3NTQyMy85YjkwMGQ0ZTEyM2QwMzFmMmE1MjZmMDBiMDYzZDBhOC5qcGc" alt="Perfume feelin sexi Femenino">
+        <div class="info">
+          <h2>Perfume feelin sexi Femenino</h2>
+          <p>Elegancia y delicadeza femenina.</p>
+          <div class="precio">Bs 254</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume feelin sexi Femenino', 254)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 11">
+        <img src="https://cdnx.jumpseller.com/jaivisa/image/23528486/resize/610/610?1650473046" alt="Perfume feelin sexi masculino">
+        <div class="info">
+          <h2>Perfume feelin sexi masculino</h2>
+          <p>Elegancia y delicadeza femenina.</p>
+          <div class="precio">Bs 254</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume feelin sexi masculino', 254)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 12">
+        <img src="https://www.blogaromatico.com.br/wp-content/uploads/2024/07/images-jpg.webp" alt="Perfume vibezi">
+        <div class="info">
+          <h2>Perfume vibezi</h2>
+          <p>Elegancia y delicadeza femenina.</p>
+          <div class="precio">Bs 217</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume vibezi', 217)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 13">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRscNMIJ2Z95ki-aesIkPbeAglQ_vmHaW-8-Q&s"Perfume grace Femenino">
+        <div class="info">
+          <h2>Perfume grace Femenino</h2>
+          <p>Grace de Hinode es una fragancia de la familia olfativa Floral para Mujeres.</p>
+          <div class="precio">Bs 278</div>
+          <div class="btn" onclick="agregarAlCarrito('Perfume grace Femenino', 278)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 14">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNO0I99_KSDbnZ6Nt9H6rkEqFln5-3HB5z_g&s"sensacion seduccion">
+        <div class="info">
+          <h2>sensacion seduccion</h2>
+          <p>Hidratante Desodorante Corporal Seducción Sensaciones es el producto ideal para dejar su piel suave, nutrida y con fragancia marcante y conquistador.</p>
+          <div class="precio">Bs 90</div>
+          <div class="btn" onclick="agregarAlCarrito('sensacion seduccion', 90)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 15">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrecfIMPUvrhP8BY5Tp3QTjCFIMtMMW_Q4Qg&s" alt="Crema Hidratante Joli">
+        <div class="info">
+          <h2>Crema Hidratante Joli</h2>
+          <p> Una firma olfativa unica que transforma tu momento de cuidado siente en tu piel la preciosidad de la naturaleza brazileña.</p>
+          <div class="precio">Bs 110</div>
+          <div class="btn" onclick="agregarAlCarrito('Crema Hidratante Joli', 110)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 16">
+        <img src="https://cdnx.jumpseller.com/jaivisa/image/30951522/resize/240/240?1673880336" alt="Aceite Hidratante Joli ">
+        <div class="info">
+          <h2>Aceite Hidratante Joli</h2>
+          <p>Relajate despues del baño cierra la ducha y disfruta del momento.</p>
+          <div class="precio">Bs 120</div>
+          <div class="btn" onclick="agregarAlCarrito('Aceite Hidratante Joli', 120)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 17">
+        <img src="https://i.ebayimg.com/images/g/ev0AAOSwtCBfmYAl/s-l1200.jpg" alt="Gel Modelador">
+        <div class="info">
+          <h2>Gel Modelador</h2>
+          <p> Elimina las grasas por demas para obtener un cuerpo firme y tonificado .</p>
+          <div class="precio">Bs 110</div>
+          <div class="btn" onclick="agregarAlCarrito('Gel Modelador', 110)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 18">
+        <img src="https://i.calameoassets.com/230504055232-8817b5a7d4aac3a3b3bb3632b2451bed/large.jpg" alt="Guante de silicona HANDS">
+        <div class="info">
+          <h2>Guante de silicona HANDS</h2>
+          <p>Manos bien cuidadas y protegidas de verdad.</p>
+          <div class="precio">Bs 55</div>
+          <div class="btn" onclick="agregarAlCarrito('Guante de silicona HANDS', 55)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 19">
+        <img src="https://static.wixstatic.com/media/1f1078_9532196127f34f16b042d6fd9ef9b072~mv2.jpg/v1/fill/w_720,h_720,al_c,q_85,enc_avif,quality_auto/1f1078_9532196127f34f16b042d6fd9ef9b072~mv2.jpg" alt="Crema Hidratante Corporal strax">
+        <div class="info">
+          <h2>Crema Hidratante Corporal strax</h2>
+          <p>Con aceite de argán, la loción Strax tiene un alto poder de hidratación sin dejar residuos grasosos.</p>
+          <div class="precio">Bs 88</div>
+          <div class="btn" onclick="agregarAlCarrito('Crema Hidratante Corporal strax', 88)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 20">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5SrvMdGNclqdmLYG_oQYqeB-5qEZ7bP8DEw&s" alt="Desodorante Roll-on">
+        <div class="info">
+          <h2>Desodorante Roll-on</h2>
+          <p>Proteccion , rapida absorcion e hidratacion .</p>
+          <div class="precio">Bs 48</div>
+          <div class="btn" onclick="agregarAlCarrito('Desodorante Roll-on', 48)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 21">
+        <img src="https://hinodenh.com.br/wp-content/uploads/gel-dental-com-carvao-ativado-e-aloe-vera-proactive-70g-hinode.jpg.webp" alt="Gel Dental Proactive">
+        <div class="info">
+          <h2>Gel Dental Proactive</h2>
+          <p>tiene su formula de carbon activado y xilitol para mayor cuidado dental.</p>
+          <div class="precio">Bs 40</div>
+          <div class="btn" onclick="agregarAlCarrito('Gel Dental Proactive', 40)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 22">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5jon5p4YeXi9Ft_4cNiy_8nAmGFr4oobc5A&s" alt="Javon cremoso SENS">
+        <div class="info">
+          <h2>Javon cremoso SENS</h2>
+          <p>Este jabón ayuda a remover impurezas sin irritar la piel, manteniendo la hidratación natural.</p>
+          <div class="precio">Bs 74</div>
+          <div class="btn" onclick="agregarAlCarrito('Javon cremoso SENS', 74)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 23">
+        <img src="https://live.staticflickr.com/8506/29184460650_7d5c437d41_z.jpg" alt="Locion Hidratante Smell">
+        <div class="info">
+          <h2>Locion Hidratante Smell</h2>
+          <p>Es un producto perfecto para quien desea una piel linda, suave e hidratada.</p>
+          <div class="precio">Bs 70</div>
+          <div class="btn" onclick="agregarAlCarrito('Locion Hidratante Smell', 70)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 24">
+        <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-m86ioto6bc35f5" alt="Serum en aceite multibeneficios">
+        <div class="info">
+          <h2>Serum en aceite multibeneficios</h2>
+          <p>Este suero revolucionario combina la riqueza de los aceites con la eficacia de un tratamiento avanzado, ofreciendo una solución completa para un cabello sano, brillante e irresistiblemente suave.</p>
+          <div class="precio">Bs 127</div>
+          <div class="btn" onclick="agregarAlCarrito('Serum en aceite multibeneficios', 127)">Comprar</div>
+        </div>
+      </div>
+ <div class="producto 25">
+        <img src="https://img.olx.com.br/images/26/269490545794707.jpg" alt="LEAVE-IN ALLIN ONE H-EXPERT">
+        <div class="info">
+          <h2>LEAVE-IN ALLIN ONE H-EXPERT</h2>
+          <p>reducción de rotura y doble puntas abiertas, fortalecimiento cabello, protección térmica y control del frizz.</p>
+          <div class="precio">Bs 127</div>
+          <div class="btn" onclick="agregarAlCarrito('LEAVE-IN ALLIN ONE H-EXPERT', 127)">Comprar</div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+
+  <div id="abrirCarrito" onclick="mostrarCarrito()">Ver Carrito</div>
+
+  <div id="carritoResumen">
+    <div id="cerrar" onclick="cerrarCarrito()">X</div>
+    <h3>Factura</h3>
+    <div id="carritoLista"></div>
+    <div id="total"></div>
+  </div>
+
+  <script>
+    let carrito = [];
+
+    function iniciarCatalogo() {
+      const nombre = document.getElementById('nombreUsuario').value.trim();
+      if (nombre !== '') {
+        document.getElementById('bienvenida').style.display = 'none';
+        document.getElementById('contenidoCatalogo').style.display = 'block';
+        document.getElementById('saludoPersonalizado').textContent = `¡Bienvenido ${nombre}! Elige tus productos:`;
+        document.getElementById('abrirCarrito').style.display = 'block';
+      } else {
+        alert('Por favor, ingresa tu nombre.');
+      }
+    }
+
+    function agregarAlCarrito(nombre, precio) {
+      carrito.push({nombre, precio});
+      alert(`${nombre} agregado al carrito.`);
+      actualizarCarrito();
+    }
+
+    function mostrarCarrito() {
+      document.getElementById('carritoResumen').style.display = 'block';
+      actualizarCarrito();
+    }
+
+    function cerrarCarrito() {
+      document.getElementById('carritoResumen').style.display = 'none';
+    }
+
+    function actualizarCarrito() {
+      const lista = document.getElementById('carritoLista');
+      const total = document.getElementById('total');
+      lista.innerHTML = '';
+      let suma = 0;
+
+      carrito.forEach(item => {
+        const div = document.createElement('div');
+        div.textContent = `${item.nombre} - Bs ${item.precio}`;
+        lista.appendChild(div);
+        suma += item.precio;
+      });
+
+      total.textContent = `Total: Bs ${suma}`;
+    }
+  </script>
+
+</body>
+</html>
